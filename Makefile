@@ -15,8 +15,8 @@
 # You should have received a copy of the GNU General Public License
 # along with flox.  If not, see <http://www.gnu.org/licenses/>.
 
-flox: main.o chunk.o memory.o debug.o value.o
-	gcc -no-pie debug.o main.o chunk.o memory.o value.o -o flox
+flox: main.o chunk.o memory.o debug.o value.o vm.o
+	gcc -no-pie debug.o main.o chunk.o memory.o value.o vm.o -o flox
 
 main.o: main.s chunk.inc
 	fasm main.s
@@ -32,3 +32,6 @@ debug.o: debug.s
 
 value.o: value.s
 	fasm value.s
+
+vm.o: vm.s
+	fasm vm.s

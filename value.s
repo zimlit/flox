@@ -43,12 +43,17 @@ writeValueArray:
 
     mov eax, dword [rdi] ; rax = count
     add eax, 1 ; rax++
+    mov ecx, 8
+    mul ecx
     cmp dword [rdi + 4], eax
     jge endif ; capacity is sufficient
     mov ecx, dword [rdi + 4] ; rcx = capacity
     push rcx
     push rax
     GROW_CAPACITY ecx
+    mov rax, 8
+    mul ecx
+    mov ecx, eax
     mov [rdi + 4], ecx
     ;call reallocate
     pop rcx
@@ -71,7 +76,7 @@ endif:
     mov rax, [rdi + 8] ; rax = code
     xor rdx, rdx
     mov edx, dword [rdi] ; rdx = count
-    movq [rdx + rax], xmm0 ; code[count] = sil
+    movq [rdx*8 + rax], xmm0 ; code[count] = sil
     add dword [rdi], 1 ; count++
 
     mov rsp, rbp

@@ -13,19 +13,15 @@
 ; GNU General Public License for more details.
 ; 
 ; You should have received a copy of the GNU General Public License
-; along with flox.  If not, see <http://www.gnu.org/licenses/>.
+; along with flox.  If not, see <https://www.gnu.org/licenses/>.
 
-OP_CONSTANT = 0
-OP_ADD = 1
-OP_SUBTRACT = 2
-OP_MULTIPLY = 3
-OP_DIVIDE = 4
-OP_NEGATE = 5
-OP_RETURN = 6
+INTERPERET_OK = 0
+INTERPERET_COMPILE_ERROR = 1
+INTERPERET_RUNTIME_ERROR = 2
 
-; Chunk memory format (48 bytes)
-; dword count
-; dword capacity
-; pointer code
-; pointer lines;
-; ValueArray constants (16 bytes)
+DEBUG_TRACE = 1
+STACK_MAX = 256
+
+; VM memory format (8 bytes)
+; poninter chunk (8 bytes)
+; pointer ip (8 bytes)

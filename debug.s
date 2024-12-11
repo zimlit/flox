@@ -90,19 +90,50 @@ endif:
     mov rcx, [rdi + 8]
     xor rdx, rdx
     mov dl, byte [rcx + rsi]
-    cmp rdx, 2 ; number of cases
+    cmp rdx, 7 ; number of cases
     jge default
     lea rax, [jump_table + rdx*8]
     jmp qword [rax]
 
 op_constant:
     push rdi
+    push rsi
     mov rdx, rdi
     mov rdi, op_constantFormat
     call constantInstruction
+    pop rsi
     pop rdi
     jmp endSwitch
-
+op_add:
+    push rdi
+    mov rdi, op_addFormat
+    call simpleInstruction
+    pop rdi
+    jmp endSwitch
+op_subtract:
+    push rdi
+    mov rdi, op_subtractFormat
+    call simpleInstruction
+    pop rdi
+    jmp endSwitch
+op_multiply:
+    push rdi
+    mov rdi, op_multiplyFormat
+    call simpleInstruction
+    pop rdi
+    jmp endSwitch
+op_divide:
+    push rdi
+    mov rdi, op_divideFormat
+    call simpleInstruction
+    pop rdi
+    jmp endSwitch
+op_negate:
+    push rdi
+    mov rdi, op_negateFormat
+    call simpleInstruction
+    pop rdi
+    jmp endSwitch
 op_return:
     push rdi
     mov rdi, op_returnFormat
@@ -194,8 +225,13 @@ offsetFormat: db "%04d ", 0
 unkownOpcodeFormat: db "Unkown opcode %d", 10, 0
 op_returnFormat: db "OP_RETURN", 0
 op_constantFormat: db "OP_CONSTANT", 0
+op_negateFormat: db "OP_NEGATE", 0
+op_addFormat: db "OP_ADD", 0
+op_subtractFormat: db "OP_SUBTRACT", 0
+op_multiplyFormat: db "OP_MULTIPLY", 0
+op_divideFormat: db "OP_DIVIDE", 0
 simpleInstructionFormat: db "%s", 10, 0
-jump_table: dq op_constant, op_return
+jump_table: dq op_constant, op_add, op_subtract, op_multiply, op_divide, op_negate, op_return
 constantFormat: db "%-16s %4d '", 0
 constantEndFormat: db "'", 10, 0
 lineNumFormat: db "%4d ", 0

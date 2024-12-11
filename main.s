@@ -24,6 +24,9 @@ extrn writeChunk
 extrn freeChunk
 extrn disassembleChunk
 extrn addConstant
+extrn initVM
+extrn freeVM
+extrn interpret
 
 section ".text"
 
@@ -31,7 +34,10 @@ section ".text"
 main:
     push rbp
     mov rbp, rsp
-    sub rsp, 8
+
+    call initVM
+
+    sub rsp, 16
 
     sub rsp, 32
     
@@ -39,7 +45,23 @@ main:
     call initChunk
 
     mov rdi, rsp
-    movq xmm0, [constant]
+    movq xmm0, [constant1]
+    call addConstant
+    mov ebx, eax
+    
+    mov rdi, rsp
+    mov rsi, OP_CONSTANT
+    mov rdx, 123
+    call writeChunk
+
+    mov rdi, rsp
+    mov rsi, rbx
+    mov rdx, 123
+    call writeChunk
+
+
+    mov rdi, rsp
+    movq xmm0, [constant2]
     call addConstant
     mov ebx, eax
     
@@ -54,14 +76,50 @@ main:
     call writeChunk
 
     mov rdi, rsp
+    mov rsi, OP_ADD
+    mov rdx, 123
+    call writeChunk
+
+
+    mov rdi, rsp
+    movq xmm0, [constant3]
+    call addConstant
+    mov ebx, eax
+    
+    mov rdi, rsp
+    mov rsi, OP_CONSTANT
+    mov rdx, 123
+    call writeChunk
+
+    mov rdi, rsp
+    mov rsi, rbx
+    mov rdx, 123
+    call writeChunk
+
+    mov rdi, rsp
+    mov rsi, OP_DIVIDE
+    mov rdx, 123
+    call writeChunk
+
+    mov rdi, rsp
+    mov rsi, OP_NEGATE
+    mov rdx, 123
+    call writeChunk
+
+    mov rdi, rsp
     mov rsi, OP_RETURN
     mov rdx, 123
     call writeChunk
     
+    ; mov rdi, rsp
+    ; mov rsi, chunkName
+    ; call disassembleChunk
+
     mov rdi, rsp
-    mov rsi, chunkName
-    call disassembleChunk
+    call interpret
     
+    call freeVM
+    mov rdi, rsp
     call freeChunk
 
     mov rsp, rbp
@@ -71,4 +129,6 @@ main:
 
 section ".data"
 chunkName db "test chunk", 0
-constant dq 1.2
+constant1 dq 1.2
+constant2 dq 3.4
+constant3 dq 5.6

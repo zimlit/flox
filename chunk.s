@@ -137,6 +137,8 @@ addConstant:
     call writeValueArray
     mov eax, dword [rdi]
     sub rax, 1
+    mov r8, 8
+    mul r8
 
     mov rsp, rbp
     pop rbp
