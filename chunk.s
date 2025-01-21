@@ -118,9 +118,9 @@ freeChunk:
     call reallocate
     pop rdi
 
-    add rdi, 8
-    call initValueArray
-    sub rdi, 8
+    add rdi, 24
+    call freeValueArray
+    sub rdi, 24
 
     call initChunk
 

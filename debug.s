@@ -198,7 +198,6 @@ constantInstruction: ; (const char *name, int offset, Chunk* chunk)
     push rsi
     push rdx
     mov rdi, [rdx + 32]
-    add rdi, r10
     movq xmm0, [rdi]
     call printValue
     pop rdx
